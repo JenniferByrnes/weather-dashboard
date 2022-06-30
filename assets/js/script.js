@@ -1,30 +1,33 @@
-var userFormEl = document.querySelector('#user-form');
-var nameInputEl = document.querySelector('#cityname');
-var repoContainerEl = document.querySelector('#repos-container');
-var repoSearchTerm = document.querySelector('#repo-search-term');
-var cityButtonsEl = document.querySelector('#city-buttons')
+var citySearchEl = $('#city-search-form');
+var cityNameEl = $('#city-name');
 
-var formSubmitHandler = function(event) {
-  // prevent page from refreshing
+var citySearchHandler = function(event) {
   event.preventDefault();
 
-  // get value from input element
-  var cityname = nameInputEl.value.trim();
+  // get cityName from input element
+  var cityName = $("input:text").val()
 
-  if (cityname) {
-    getUserRepos(cityname);
+  console.log("cityName ********************** ", cityName);
+
+  // if we have a city name, get lat/long, else error
+  if (cityName) {
+
+    getCityLatLong(cityName);
 
     // clear old content
-    repoContainerEl.textContent = '';
-    nameInputEl.value = '';
+    //cityContainerEl.textContent = '';
+    cityNameEl.val('');
   } else {
-    alert('Please enter a GitHub cityname');
+    alert('Please enter a city name');
+    return;
   }
 };
 
-var getUserRepos = function(user) {
+var getCityLatLong = function(cityName) {
+
+  console.log("in getCityLatLong ********************** ", cityName);
   // format the github api url
-  var apiUrl = 'https://api.github.com/users/' + user + '/repos';
+  var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&appid=d89a7998c295640400d389063c3b71e9';
 
   // make a get request to url
   fetch(apiUrl)
@@ -33,92 +36,20 @@ var getUserRepos = function(user) {
       if (response.ok) {
         
         response.json().then(function(data) {
+          console.log("*******************************  data= ", data);
+          console.log("*******************************  lat= ", data[0].lat);
+          console.log("*******************************  lon= ", data[0].lon, data[0].name, data[0].state);
           
-          displayRepos(data, user);
+          //getWeather(data);
+
         });
       } else {
-        alert('Error: GitHub User Not Found');
+        alert('Error: Total Bummer');
       }
     })
     .catch(function(error) {
-      alert('Unable to connect to GitHub');
+      alert('Unable to connect to OpenWeatherAPI');
     });
 };
 
-var getFeaturedRepos = function(city) {
-  var apiUrl = "https://api.github.com/search/repositories?q=" + city + "+is:featured&sort=help-wanted-issues";
-
-  fetch(apiUrl).then(function(response) {
-    if (response.ok) {
-      console.log("--------------------response",response);
-      response.json().then(function(data) { 
-        console.log("---------------------data.items, city", data.items, city);  
-        displayRepos(data.items, city);
-      });
-    } else {
-      alert('Error: GitHub User Not Found');
-    }
-  });
-};
-
-var displayRepos = function(repos, searchTerm) {
-  // check if api returned any repos
-  if (repos.length === 0) {
-    repoContainerEl.textContent = 'No repositories found.';
-    return;
-  }
-
-  repoSearchTerm.textContent = searchTerm;
-
-  // loop over repos
-  for (var i = 0; i < repos.length; i++) {
-    // format repo name
-    var repoName = repos[i].owner.login + '/' + repos[i].name;
-
-    // create a link for each repo
-    var repoEl = document.createElement("a");
-    repoEl.classList = "list-item flex-row justify-space-between align-center";
-    repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
-
-    // create a span element to hold repository name
-    var titleEl = document.createElement('span');
-    titleEl.textContent = repoName;
-
-    // append to container
-    repoEl.appendChild(titleEl);
-
-    // create a status element
-    var statusEl = document.createElement('span');
-    statusEl.classList = 'flex-row align-center';
-
-    // check if current repo has issues or not
-    if (repos[i].open_issues_count > 0) {
-      statusEl.innerHTML =
-        "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + ' issue(s)';
-    } else {
-      statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
-    }
-
-    // append to container
-    repoEl.appendChild(statusEl);
-
-    // append container to the dom
-    repoContainerEl.appendChild(repoEl);
-  }
-};
-
-var buttonClickHandler = function(event) {
-  event.preventDefault();
-  var city = event.target.getAttribute("data-city");
-  if (city) {
-    console.log("----------------------city=", city)
-    getFeaturedRepos(city);
-
-    // clear old content
-    repoContainerEl.textContent = "";
-  }
-}
-
-// add event listeners to forms
-userFormEl.addEventListener('submit', formSubmitHandler);
-cityButtonsEl.addEventListener("click", buttonClickHandler)
+citySearchEl.on('submit', citySearchHandler);
