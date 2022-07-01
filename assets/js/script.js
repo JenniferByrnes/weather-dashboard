@@ -1,21 +1,27 @@
 var citySearchEl = $('#city-search-form');
 var cityNameEl = $('#city-name');
+var formalCityName;
+
+// Get the city info from local storage
+var cityObjArray = JSON.parse(localStorage.getItem("cityInfo")) || [];
+
+var renderCitySelectors = function() {
+  cityObjArray.forEach(function(placeHolder, arrayIndex) {
+    // Create button for city choices
+    appendCity(cityObjArray[arrayIndex].cityName);
+  })
+}
 
 var citySearchHandler = function(event) {
   event.preventDefault();
 
   // get cityName from input element
-  var cityName = $("input:text").val()
-
-  console.log("cityName ********************** ", cityName);
+  var cityName = $("input:text").val();
 
   // if we have a city name, get lat/long, else error
   if (cityName) {
-
     getCityLatLong(cityName);
-
-    // clear old content
-    //cityContainerEl.textContent = '';
+    // clear input field content
     cityNameEl.val('');
   } else {
     alert('Please enter a city name');
@@ -25,8 +31,7 @@ var citySearchHandler = function(event) {
 
 var getCityLatLong = function(cityName) {
 
-  console.log("in getCityLatLong ********************** ", cityName);
-  // format the github api url
+  // format the openwathermap api url
   var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&appid=d89a7998c295640400d389063c3b71e9';
 
   // make a get request to url
@@ -35,12 +40,30 @@ var getCityLatLong = function(cityName) {
       // request was successful
       if (response.ok) {
         
-        response.json().then(function(data) {
-          console.log("*******************************  data= ", data);
-          console.log("*******************************  lat= ", data[0].lat);
-          console.log("*******************************  lon= ", data[0].lon, data[0].name, data[0].state);
-          
-          //getWeather(data);
+        response.json().then(function(cityData) {
+          console.log("*******************************  data= ", cityData);
+          if (!cityData[0]) {
+            // no data returned for cityName
+            console.log("no data returned - invalid city????")
+          } else {
+            console.log("*******************************  lat= ", cityData[0].lat);
+            console.log("*******************************  lon= ", cityData[0].lon);
+            console.log("******************************* ", cityData[0].name, cityData[0].state);
+            // Prepare object to push into array and make new selector button
+            formalCityName = cityData[0].name
+            const cityObj = {
+              cityName: formalCityName,
+              stateName: cityData[0].state,
+              latitude: cityData[0].lat,
+              longitude: cityData[0].lon
+              }
+            cityObjArray.push(cityObj);
+            localStorage.setItem("cityInfo", JSON.stringify(cityObjArray));
+            
+            appendCity(cityObj.cityName);
+            getWeather(cityObj.latitude, cityObj.longitude);
+          }
+
 
         });
       } else {
@@ -52,4 +75,54 @@ var getCityLatLong = function(cityName) {
     });
 };
 
+var appendCity = function(cityName){
+  console.log("in displayCityChoices()");
+  console.log("*******************************2 cityName = ", cityName);
+    var cityButton = $("<button class=btn></button>").text(cityName)
+    $("#city-buttons").append(cityButton);   // Append new element
+}
+/************************************************/
+var getWeather = function(latitude, longitude) {
+  // format the openwathermap api url
+  var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=d89a7998c295640400d389063c3b71e9';
+
+  // make a get request to url
+  fetch(apiUrl)
+    .then(function(response) {
+      // request was successful
+      if (response.ok) {
+        
+        response.json().then(function(data) {
+          console.log("*******************************  data= ", data);
+          if (!data.list[0]) {
+            // no data returned
+            console.log("no data returned - invalid lat/lon????")
+          } else {
+            console.log("******************************* date = ", data.list[0].dt_txt);
+            console.log("******************************* temp= ", data.list[0].main.temp);
+            console.log("******************************* wind= ", data.list[0].wind.speed);
+            console.log("******************************* humidity= ", data.list[0].main.humidity);
+
+
+            const initialDate = new Date(data.list[0].dt_txt);
+            console.log("*******************************4 initialDate = ", initialDate);
+           // $(".subtitle")text=(data.city.name, data.list[0].dt_txt);
+            $("#city-date").html(formalCityName + " (" + initialDate.toDateString() + ")");
+
+
+
+          }
+
+
+        });
+      } else {
+        alert('Error: Total Bummer');
+      }
+    })
+    .catch(function(error) {
+      alert('Unable to connect to OpenWeatherAPI');
+    });
+}
+
 citySearchEl.on('submit', citySearchHandler);
+renderCitySelectors();
