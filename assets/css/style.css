@@ -206,11 +206,11 @@ li {
 /* This is the CSS for the elements inside the flex-container */
 .flex-container > ul {
   color: #f1f1f1;
-  background-color: var(--dark);
+  background-color: var(--bright);
   margin: 5px;
   min-width: 140px;
   font-size: 30px;
-  border: 3px solid var(--dark);
+  
 }
 
 .flex-row {

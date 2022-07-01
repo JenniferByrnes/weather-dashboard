@@ -105,8 +105,16 @@ var getWeather = function(latitude, longitude) {
             // Load window for today's data
             const initialDate = new Date();
             console.log("*******************************4 initialDate = ", initialDate);
-           // $(".subtitle")text=(data.city.name, data.list[0].dt_txt);
+            //this should have worked.....
+            var iconCode = data.current.weather[0].id + data.current.weather[0].icon;
+            //this actually worked.......
+            iconCode = data.current.weather[0].icon + "@2x";
+            console.log("iconCode=" + iconCode);
+            
+            var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+            console.log("iconUrl=" + iconUrl);
             $("#city-date").html(formalCityName + " (" + initialDate.toDateString() + ")");
+            $("#today-icon").html("<img src='" + iconUrl  + "'>");
             $("#today-temperature").text("Temp: " + data.current.temp + "F");
             $("#today-winds").text("Winds: " + data.current.wind_speed + " MPH");
             $("#today-humidity").text("Humidity: " + data.current.humidity + " %");
@@ -119,9 +127,20 @@ var getWeather = function(latitude, longitude) {
               forecastDate.setDate(initialDate.getDate() + i);
               //$("#" + i).text(forecastDate.toDateString());
               $("[id="+i+"] [class=date]").text(forecastDate.toDateString());
+
+              //this should have worked.....
+              //var iconCode = data.daily[i].weather[0].id + data.daily[i].weather[0].icon;
+              //this actually worked.......
+              iconCode = data.daily[i].weather[0].icon + "@2x";
+              console.log("iconCode=" + iconCode);
+
+              var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+              console.log("iconUrl=" + iconUrl);
+
+              $("[id="+i+"] [class=icon]").html("<img src='" + iconUrl  + "'>");
               $("[id="+i+"] [class=temp]").text("Temp: " + data.daily[i].temp.max + "F");
-              $("[id="+i+"] [class=wind]").text("Winds: " + data.current.wind_speed + " MPH");
-              $("[id="+i+"] [class=humidity]").text("Humidity: " + data.current.humidity + " %");
+              $("[id="+i+"] [class=wind]").text("Winds: " + data.daily[i].wind_speed + " MPH");
+              $("[id="+i+"] [class=humidity]").text("Humidity: " + data.daily[i].humidity + " %");
 
 
             }

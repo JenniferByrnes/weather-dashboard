@@ -5,12 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+
+  <link href="http://openweathermap.org/img/wn/10d@2x.png" />
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"/>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
   <link rel="stylesheet" href="./assets/css/style.css" />
 
-  <link rel="stylesheet" href="./assets/css/style.css" />
   <title>Weather Dashboard</title>
 </head>
 
@@ -18,7 +19,6 @@
   <header class="hero">
     <h1 class="app-title"> Weather Dashboard</h1>
   </header>
-
 
   <main class="flex-row justify-space-between">
     <div class="col-12 col-md-4">
@@ -42,6 +42,7 @@
           <i></i>
         </h2>
         <ul class="city-today-group">
+          <li class="weather-info" id="today-icon"></li>
           <li class="weather-info" id="today-temperature">Temp: </li>
           <li class="weather-info" id="today-winds">Winds: </li>
           <li class="weather-info" id="today-humidity">Humidity: </li>
@@ -53,35 +54,35 @@
         <div class="flex-container list-group">
           <ul class="card forecast-day" id="1">
             <li class="date">(date) </li>
-            <li><i></i></li>
+            <li class="icon"><i></i></li>
             <li class="temp">Temp:</li>
             <li class="wind">Wind:</li>
-            <li>Humidity:</li>
+            <li class="humidity">Humidity:</li>
           </ul>
           <ul class="card forecast-day" id="2">
             <li class="date">(date) </li>
-            <li><i></i></li>
+            <li class="icon"><i></i></li>
             <li class="temp">Temp:</li>
             <li class="wind">Wind:</li>
             <li class="humidity">Humidity:</li>
           </ul>
           <ul class="card forecast-day" id="3">
             <li class="date">(date) </li>
-            <li><i></i></li>
+            <li class="icon"><i></i></li>
             <li class="temp">Temp:</li>
             <li class="wind">Wind:</li>
             <li class="humidity">Humidity:</li>
           </ul>
           <ul class="card forecast-day" id="4">
             <li class="date">(date) </li>
-            <li><i></i></li>
+            <li class="icon"><i></i></li>
             <li class="temp">Temp:</li>
             <li class="wind">Wind:</li>
             <li class="humidity">Humidity:</li>
           </ul>
           <ul class="card forecast-day" id="5">
             <li class="date">(date) </li>
-            <li><i></i></li>
+            <li class="icon"><i></i></li>
             <li class="temp">Temp:</li>
             <li class="wind">Wind:</li>
             <li class="humidity">Humidity:</li>
