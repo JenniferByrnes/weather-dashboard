@@ -84,7 +84,9 @@ var appendCity = function(cityName){
 /************************************************/
 var getWeather = function(latitude, longitude) {
   // format the openwathermap api url
-  var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=d89a7998c295640400d389063c3b71e9';
+  //var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=d89a7998c295640400d389063c3b71e9';
+
+  var apiUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=minutely,hourly&units=imperial&appid=d89a7998c295640400d389063c3b71e9';
 
   // make a get request to url
   fetch(apiUrl)
@@ -94,23 +96,35 @@ var getWeather = function(latitude, longitude) {
         
         response.json().then(function(data) {
           console.log("*******************************  data= ", data);
-          if (!data.list[0]) {
+          if (!data.daily[0]) {
             // no data returned
             console.log("no data returned - invalid lat/lon????")
-          } else {
-            console.log("******************************* date = ", data.list[0].dt_txt);
-            console.log("******************************* temp= ", data.list[0].main.temp);
-            console.log("******************************* wind= ", data.list[0].wind.speed);
-            console.log("******************************* humidity= ", data.list[0].main.humidity);
+          } 
+          else {
 
-
-            const initialDate = new Date(data.list[0].dt_txt);
+            // Load window for today's data
+            const initialDate = new Date();
             console.log("*******************************4 initialDate = ", initialDate);
            // $(".subtitle")text=(data.city.name, data.list[0].dt_txt);
             $("#city-date").html(formalCityName + " (" + initialDate.toDateString() + ")");
+            $("#today-temperature").text("Temp: " + data.current.temp + "F");
+            $("#today-winds").text("Winds: " + data.current.wind_speed + " MPH");
+            $("#today-humidity").text("Humidity: " + data.current.humidity + " %");
+            $("#today-uv-index").text("UV Index: " + data.current.uvi);
+
+            // Load the 5 day forecast
+            for (var i=1; i<6; i++) {
+              // add a day
+              const forecastDate = new Date();
+              forecastDate.setDate(initialDate.getDate() + i);
+              //$("#" + i).text(forecastDate.toDateString());
+              $("[id="+i+"] [class=date]").text(forecastDate.toDateString());
+              $("[id="+i+"] [class=temp]").text("Temp: " + data.daily[i].temp.max + "F");
+              $("[id="+i+"] [class=wind]").text("Winds: " + data.current.wind_speed + " MPH");
+              $("[id="+i+"] [class=humidity]").text("Humidity: " + data.current.humidity + " %");
 
 
-
+            }
           }
 
 
