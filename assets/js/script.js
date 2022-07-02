@@ -5,6 +5,8 @@ var formalCityName;
 // Get the city info from local storage
 var cityObjArray = JSON.parse(localStorage.getItem("cityInfo")) || [];
 
+var cityButtonEl = document.querySelector('#city-buttons')
+
 var renderCitySelectors = function() {
   cityObjArray.forEach(function(placeHolder, arrayIndex) {
     // Create button for city choices
@@ -46,8 +48,6 @@ var getCityLatLong = function(cityName) {
             // no data returned for cityName
             console.log("no data returned - invalid city????")
           } else {
-            console.log("*******************************  lat= ", cityData[0].lat);
-            console.log("*******************************  lon= ", cityData[0].lon);
             console.log("******************************* ", cityData[0].name, cityData[0].state);
             // Prepare object to push into array and make new selector button
             formalCityName = cityData[0].name
@@ -63,8 +63,6 @@ var getCityLatLong = function(cityName) {
             appendCity(cityObj.cityName);
             getWeather(cityObj.latitude, cityObj.longitude);
           }
-
-
         });
       } else {
         alert('Error: Total Bummer');
@@ -76,12 +74,11 @@ var getCityLatLong = function(cityName) {
 };
 
 var appendCity = function(cityName){
-  console.log("in displayCityChoices()");
-  console.log("*******************************2 cityName = ", cityName);
+
     var cityButton = $("<button class=btn></button>").text(cityName)
-    $("#city-buttons").append(cityButton);   // Append new element
+    $("#city-buttons").append(cityButton);   // Append new city button element
 }
-/************************************************/
+
 var getWeather = function(latitude, longitude) {
   // format the openwathermap api url
   //var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=d89a7998c295640400d389063c3b71e9';
@@ -104,7 +101,7 @@ var getWeather = function(latitude, longitude) {
 
             // Load window for today's data
             const initialDate = new Date();
-            console.log("*******************************4 initialDate = ", initialDate);
+/************************************************************************ */
             //this should have worked.....
             var iconCode = data.current.weather[0].id + data.current.weather[0].icon;
             //this actually worked.......
@@ -112,13 +109,22 @@ var getWeather = function(latitude, longitude) {
             console.log("iconCode=" + iconCode);
             
             var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
-            console.log("iconUrl=" + iconUrl);
+
             $("#city-date").html(formalCityName + " (" + initialDate.toDateString() + ")");
             $("#today-icon").html("<img src='" + iconUrl  + "'>");
             $("#today-temperature").text("Temp: " + data.current.temp + "F");
             $("#today-winds").text("Winds: " + data.current.wind_speed + " MPH");
             $("#today-humidity").text("Humidity: " + data.current.humidity + " %");
             $("#today-uv-index").text("UV Index: " + data.current.uvi);
+            if (data.current.uvi <= 2) {
+              $("#today-uv-index").addClass("uv-low");
+            } else if (data.current.uvi <= 5) {
+              $("#today-uv-index").addClass("uv-moderate");
+            } else if (data.current.uvi <= 7) {
+            $("#today-uv-index").addClass("uv-high");
+            } else {
+            $("#today-uv-index").addClass("uv-extreme");
+            };
 
             // Load the 5 day forecast
             for (var i=1; i<6; i++) {
@@ -135,18 +141,13 @@ var getWeather = function(latitude, longitude) {
               console.log("iconCode=" + iconCode);
 
               var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
-              console.log("iconUrl=" + iconUrl);
 
               $("[id="+i+"] [class=icon]").html("<img src='" + iconUrl  + "'>");
               $("[id="+i+"] [class=temp]").text("Temp: " + data.daily[i].temp.max + "F");
               $("[id="+i+"] [class=wind]").text("Winds: " + data.daily[i].wind_speed + " MPH");
               $("[id="+i+"] [class=humidity]").text("Humidity: " + data.daily[i].humidity + " %");
-
-
             }
           }
-
-
         });
       } else {
         alert('Error: Total Bummer');
@@ -157,5 +158,19 @@ var getWeather = function(latitude, longitude) {
     });
 }
 
+var buttonClickHandler = function(event){
+  event.preventDefault();
+  formalCityName = event.target.innerHTML;
+
+  cityObjArray.forEach(function(placeHolder, arrayIndex) {
+    // find the city to get the lat/long
+    if (cityObjArray[arrayIndex].cityName === formalCityName) {
+      getWeather(cityObjArray[arrayIndex].latitude, cityObjArray[arrayIndex].longitude);
+    };
+  });
+}
+
 citySearchEl.on('submit', citySearchHandler);
+cityButtonEl.addEventListener("click", buttonClickHandler)
+
 renderCitySelectors();

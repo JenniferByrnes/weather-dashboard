@@ -6,6 +6,26 @@
   --dark: #250486;
   --bright: #4005f2;
   --border-radius: .3rem;
+  --uv-low: #18cf37;
+  --uv-moderate:  #e7ee1a;
+  --uv-high:  #f29305;
+  --uv-extreme:  #f20505;
+}
+
+.uv-low {
+  background-color: var(--uv-low);
+}
+
+.uv-moderate {
+  background-color: var(--uv-moderate);
+}
+
+.uv-high {
+  background-color: var(--uv-high);
+}
+
+.uv-extreme {
+  background-color: var(--uv-extreme);
 }
 
 * {
@@ -147,6 +167,7 @@ li {
 .card {
   margin: 0 0 20px 0;
   border: 1px solid var(--dark);
+  background-color: lightyellow;
 }
 
 .card-header {
