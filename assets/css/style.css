@@ -152,6 +152,14 @@ li {
 }
 
 /* This is the CSS for the elements inside */
+
+#day-plus-0 {
+  padding: 3px;
+}
+
+#city-date {
+  padding: 10px 10px 0 3px;
+}
 .city-today-group > li {
   text-decoration: none;
 }
@@ -224,7 +232,6 @@ li {
   text-transform: uppercase;
 }
 
-
 /* FLEX CONTENT */
 .flex-container {
   display: flex;
@@ -236,8 +243,9 @@ li {
 .flex-container > ul {
   color: #f1f1f1;
   background-color: var(--bright);
-  margin: 5px;
-  min-width: 140px;
+  margin: 3px;
+  padding: 3px;
+  min-width: 145px;
   font-size: 30px;
 }
 
@@ -252,9 +260,9 @@ li {
   flex-wrap: wrap;
 }
 
-#today-uv-group {
+.today-flex-group {
   justify-content: left;
-  font-size: 1rem;
+
 }
 
 #today-uv-group > p {

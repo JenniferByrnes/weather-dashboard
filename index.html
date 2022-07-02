@@ -37,16 +37,15 @@
 
     <div class="col-12 col-md-8" id="forecast-side">
       <div class="card" id="day-plus-0">
-        <h2 class="subtitle"> 
+        <h2 class="subtitle flex-container today-flex-group"> 
           <span id="city-date">City and Date</span>
-          <i></i>
+          <div class="weather-info icon-size" id="today-icon"></div>
         </h2>
         <ul class="city-today-group">
-          <div class="weather-info" id="today-icon"></div>
           <li class="weather-info" id="today-temperature">Temp: </li>
           <li class="weather-info" id="today-winds">Winds: </li>
           <li class="weather-info" id="today-humidity">Humidity: </li>
-          <div class="weather-info flex-container flex-row" id="today-uv-group">
+          <div class="weather-info flex-container flex-row today-flex-group" id="today-uv-group">
             <p>UV Index:   </p>
             <p class="weather-info" id="today-uv-index"></p>
           </div>
@@ -90,7 +89,6 @@
             <li class="wind">Wind:</li>
             <li class="humidity">Humidity:</li>
           </ul>
-          
         </div>
       </div>
     </div>

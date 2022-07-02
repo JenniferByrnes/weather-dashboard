@@ -48,7 +48,6 @@ var getCityLatLong = function(cityName) {
             // no data returned for cityName
             console.log("no data returned - invalid city????")
           } else {
-            console.log("******************************* ", cityData[0].name, cityData[0].state);
             // Prepare object to push into array and make new selector button
             formalCityName = cityData[0].name
             const cityObj = {
@@ -108,7 +107,7 @@ var getWeather = function(latitude, longitude) {
             // Get the icon
             var iconCode = data.current.weather[0].icon + "@2x";          
             var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";   
-            $("#today-icon").html("<img src='" + iconUrl  + "'>");
+            $("#today-icon").html("<img class=icon-size src='" + iconUrl  + "'>");
 
             // Display the temp/wind/humidity
             $("#today-temperature").text("Temp: " + data.current.temp + "F");
@@ -144,11 +143,10 @@ var getWeather = function(latitude, longitude) {
               //var iconCode = data.daily[i].weather[0].id + data.daily[i].weather[0].icon;
               //this actually worked.......
               iconCode = data.daily[i].weather[0].icon + "@2x";
-              console.log("iconCode=" + iconCode);
-
               var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
-
               $("[id="+i+"] [class=icon]").html("<img src='" + iconUrl  + "' class=icon-size>");
+
+              // Display the remainder of the 5 day data
               $("[id="+i+"] [class=temp]").text("Temp: " + data.daily[i].temp.max + "F");
               $("[id="+i+"] [class=wind]").text("Winds: " + data.daily[i].wind_speed + " MPH");
               $("[id="+i+"] [class=humidity]").text("Humidity: " + data.daily[i].humidity + " %");
@@ -178,5 +176,23 @@ var buttonClickHandler = function(event){
 
 citySearchEl.on('submit', citySearchHandler);
 cityButtonEl.addEventListener("click", buttonClickHandler)
+
+// Show movement on hover
+$(cityButtonEl).hover(
+  function() {
+    $( this ).addClass( "hover" );
+  }, function() {
+    $( this ).removeClass( "hover" );
+  }
+);
+
+// Change color on hover
+$(citySearchEl).hover(
+  function() {
+    $( this ).addClass( "hover" );
+  }, function() {
+    $( this ).removeClass( "hover" );
+  }
+);
 
 renderCitySelectors();
