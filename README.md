@@ -8,6 +8,7 @@ The user can see the 5 day weather forecast for a selection of cities.
 * HTML
 * CSS
 * JavaScript
+* JQuery
 
 ## Website
 https://jenniferbyrnes.github.io/weather-dashboard
