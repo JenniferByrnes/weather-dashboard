@@ -60,6 +60,7 @@ var getCityLatLong = function(cityName) {
             cityObjArray.push(cityObj);
             localStorage.setItem("cityInfo", JSON.stringify(cityObjArray));
             
+            // Add city button to search button list and get the weather
             appendCity(cityObj.cityName);
             getWeather(cityObj.latitude, cityObj.longitude);
           }
@@ -101,29 +102,34 @@ var getWeather = function(latitude, longitude) {
 
             // Load window for today's data
             const initialDate = new Date();
-/************************************************************************ */
-            //this should have worked.....
-            var iconCode = data.current.weather[0].id + data.current.weather[0].icon;
-            //this actually worked.......
-            iconCode = data.current.weather[0].icon + "@2x";
-            console.log("iconCode=" + iconCode);
-            
-            var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
 
             $("#city-date").html(formalCityName + " (" + initialDate.toDateString() + ")");
+
+            // Get the icon
+            var iconCode = data.current.weather[0].icon + "@2x";          
+            var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";   
             $("#today-icon").html("<img src='" + iconUrl  + "'>");
+
+            // Display the temp/wind/humidity
             $("#today-temperature").text("Temp: " + data.current.temp + "F");
             $("#today-winds").text("Winds: " + data.current.wind_speed + " MPH");
             $("#today-humidity").text("Humidity: " + data.current.humidity + " %");
-            $("#today-uv-index").text("UV Index: " + data.current.uvi);
+
+            // Display the UV index with background color
+            $("#today-uv-index").text("" + data.current.uvi );
+
+            // clear any old color class
+            $("#today-uv-index").removeClass();
+
+            // get the correct color
             if (data.current.uvi <= 2) {
               $("#today-uv-index").addClass("uv-low");
             } else if (data.current.uvi <= 5) {
               $("#today-uv-index").addClass("uv-moderate");
             } else if (data.current.uvi <= 7) {
-            $("#today-uv-index").addClass("uv-high");
+              $("#today-uv-index").addClass("uv-high");
             } else {
-            $("#today-uv-index").addClass("uv-extreme");
+              $("#today-uv-index").addClass("uv-extreme");
             };
 
             // Load the 5 day forecast
@@ -142,7 +148,7 @@ var getWeather = function(latitude, longitude) {
 
               var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
 
-              $("[id="+i+"] [class=icon]").html("<img src='" + iconUrl  + "'>");
+              $("[id="+i+"] [class=icon]").html("<img src='" + iconUrl  + "' class=icon-size>");
               $("[id="+i+"] [class=temp]").text("Temp: " + data.daily[i].temp.max + "F");
               $("[id="+i+"] [class=wind]").text("Winds: " + data.daily[i].wind_speed + " MPH");
               $("[id="+i+"] [class=humidity]").text("Humidity: " + data.daily[i].humidity + " %");

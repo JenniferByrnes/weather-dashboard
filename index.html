@@ -42,11 +42,14 @@
           <i></i>
         </h2>
         <ul class="city-today-group">
-          <li class="weather-info" id="today-icon"></li>
+          <div class="weather-info" id="today-icon"></div>
           <li class="weather-info" id="today-temperature">Temp: </li>
           <li class="weather-info" id="today-winds">Winds: </li>
           <li class="weather-info" id="today-humidity">Humidity: </li>
-          <li class="weather-info" id="today-uv-index">UV Index: </li>
+          <div class="weather-info flex-container flex-row" id="today-uv-group">
+            <p>UV Index:   </p>
+            <p class="weather-info" id="today-uv-index"></p>
+          </div>
         </ul>
       </div>
       <div id="five-day-forecast-group">

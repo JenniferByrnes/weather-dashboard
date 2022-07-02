@@ -142,11 +142,19 @@ li {
   width: 100%;
 }
 
+.icon {
+  text-align: center;
+}
+
+.icon-size {
+  max-width: 50px;
+  max-height: 50px;
+}
+
 /* This is the CSS for the elements inside */
 .city-today-group > li {
   text-decoration: none;
 }
-
 
 .status-icon {
   padding: 2px 5px;
@@ -231,7 +239,6 @@ li {
   margin: 5px;
   min-width: 140px;
   font-size: 30px;
-  
 }
 
 .flex-row {
@@ -243,6 +250,17 @@ li {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+}
+
+#today-uv-group {
+  justify-content: left;
+  font-size: 1rem;
+}
+
+#today-uv-group > p {
+  font-size: 1rem;
+  padding: .2%;
+  margin: 0 3px 0 0;
 }
 
 .justify-space-between {
