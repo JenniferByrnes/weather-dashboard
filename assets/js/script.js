@@ -34,7 +34,7 @@ var citySearchHandler = function(event) {
 var getCityLatLong = function(cityName) {
 
   // format the openwathermap api url
-  var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&appid=d89a7998c295640400d389063c3b71e9';
+  var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&appid=d89a7998c295640400d389063c3b71e9';
 
   // make a get request to url
   fetch(apiUrl)
@@ -81,7 +81,7 @@ var appendCity = function(cityName){
 
 var getWeather = function(latitude, longitude) {
   // format the openwathermap api url
-  //var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=d89a7998c295640400d389063c3b71e9';
+  //var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=d89a7998c295640400d389063c3b71e9';
 
   var apiUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=minutely,hourly&units=imperial&appid=d89a7998c295640400d389063c3b71e9';
 
@@ -106,7 +106,7 @@ var getWeather = function(latitude, longitude) {
 
             // Get the icon
             var iconCode = data.current.weather[0].icon + "@2x";          
-            var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";   
+            var iconUrl = "https://openweathermap.org/img/wn/" + iconCode + ".png";   
             $("#today-icon").html("<img class=icon-size src='" + iconUrl  + "'>");
 
             // Display the temp/wind/humidity
@@ -143,7 +143,7 @@ var getWeather = function(latitude, longitude) {
               //var iconCode = data.daily[i].weather[0].id + data.daily[i].weather[0].icon;
               //this actually worked.......
               iconCode = data.daily[i].weather[0].icon + "@2x";
-              var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+              var iconUrl = "https://openweathermap.org/img/wn/" + iconCode + ".png";
               $("[id="+i+"] [class=icon]").html("<img src='" + iconUrl  + "' class=icon-size>");
 
               // Display the remainder of the 5 day data
